@@ -1,15 +1,16 @@
-import { ClawServer, ClawAgent } from "openclaw";
+import { ClawApp, ClawModel } from "openclaw";
 
-const agent = new ClawAgent({
+const app = new ClawApp({
   name: process.env.BOT_NAME || "ClawDBot",
-  model: process.env.MODEL,
-  anthropicKey: process.env.ANTHROPIC_API_KEY
+  models: [
+    new ClawModel({
+      provider: "anthropic",
+      model: process.env.MODEL,
+      apiKey: process.env.ANTHROPIC_API_KEY
+    })
+  ]
 });
 
-const server = new ClawServer({
-  port: process.env.PORT || 3000,
-  agents: [agent]
-});
+app.listen(process.env.PORT || 3000);
 
-server.start();
 console.log("ClawDBot running on port", process.env.PORT || 3000);
